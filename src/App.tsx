@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./normalize.css";
 import Message from "./components/Message";
 import Background from "./components/Background";
-import { Editor, EditorState, RichUtils, DraftEditorCommand } from "draft-js";
+import {
+	Editor,
+	EditorState,
+	RichUtils,
+	DraftEditorCommand,
+	convertToRaw,
+} from "draft-js";
 import "draft-js/dist/Draft.css";
 import {
 	BoldButton,
+	ClipboardButton,
 	CodeButton,
 	Controls,
 	ItalicButton,
+	ShareButton,
 	StrikethroughButton,
-	UnderlineButton,
 } from "./components/styles";
 
 function App() {
 	const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
 	const onChange = (editorState: EditorState) => {
 		setEditorState(editorState);
 	};
@@ -36,19 +44,60 @@ function App() {
 
 	const onBoldClick = () => {
 		onChange(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+		console.log(convertToRaw(editorState.getCurrentContent()));
 	};
 	const onItalicClick = () => {
 		onChange(RichUtils.toggleInlineStyle(editorState, "ITALIC"));
 	};
-	const onUnderlineClick = () => {
-		onChange(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
-	};
 	const onStrikethroughClick = () => {
-		onChange(RichUtils.toggleInlineStyle(editorState, "MONOSPACE"));
+		onChange(RichUtils.toggleInlineStyle(editorState, "STRIKETHROUGH"));
 	};
 	const onCodeClick = () => {
 		onChange(RichUtils.toggleInlineStyle(editorState, "CODE"));
 	};
+
+	useEffect(() => {
+		const raw = convertToRaw(editorState.getCurrentContent());
+		console.log(raw);
+		const styleApplied = raw.blocks.map((block) => {
+			block.inlineStyleRanges.map((range, index) => {
+				let formatChar = "";
+				switch (range.style) {
+					case "BOLD":
+						formatChar = "*";
+						break;
+					case "ITALIC":
+						formatChar = "_";
+						break;
+					case "STRIKETHROUGH":
+						formatChar = "~";
+						break;
+					case "CODE":
+						formatChar = "```";
+						break;
+				}
+				const newBlockText =
+					block.text.substring(0, range.offset + index) +
+					formatChar +
+					block.text.substring(
+						range.offset + index,
+						range.offset + index + range.length
+					) +
+					formatChar +
+					block.text.substring(range.offset + index + range.length);
+				// block.text.substring(range.offset + index);
+				console.log(newBlockText);
+				return (block.text = newBlockText);
+			});
+			return block.text;
+		});
+		//this.substring(0, index) + string + this.substr(index)
+		const whatsappFormatted = styleApplied.reduce(
+			(acc, curr) => acc + curr,
+			""
+		);
+		console.log(whatsappFormatted);
+	}, [editorState]);
 
 	return (
 		<Background>
@@ -62,9 +111,10 @@ function App() {
 			<Controls>
 				<BoldButton onClick={onBoldClick} />
 				<ItalicButton onClick={onItalicClick} />
-				<UnderlineButton onClick={onUnderlineClick} />
 				<StrikethroughButton onClick={onStrikethroughClick} />
 				<CodeButton onClick={onCodeClick} />
+				<ClipboardButton />
+				<ShareButton />
 			</Controls>
 		</Background>
 	);

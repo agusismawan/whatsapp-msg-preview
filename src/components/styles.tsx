@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import {
 	MdCode,
+	MdContentCopy,
 	MdFormatBold,
 	MdFormatItalic,
 	MdFormatUnderlined,
 	MdOutlineFormatStrikethrough,
+	MdShare,
 } from "react-icons/md";
 
 export const Controls = styled.div`
@@ -46,5 +48,14 @@ export const StrikethroughButton = styled(MdOutlineFormatStrikethrough)`
 `;
 
 export const CodeButton = styled(MdCode)`
+	${buttonStyle}
+`;
+
+export const ClipboardButton = styled(MdContentCopy)`
+	margin-left: auto;
+	${buttonStyle}
+`;
+
+export const ShareButton = styled(MdShare)`
 	${buttonStyle}
 `;
