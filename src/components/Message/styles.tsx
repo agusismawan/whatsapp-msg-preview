@@ -1,16 +1,22 @@
 import styled from "styled-components";
 
 export const MessageContainer = styled.div`
-	width: 300px;
-	min-height: 50px;
+	min-width: 5%;
+	max-width: 49%;
+	min-height: 12px;
 	background-color: #065051;
 	z-index: 2;
 	border-radius: 8px;
 	color: rgb(241 241 242 / 95%);
-	padding: 10px 20px 20px 10px;
+	padding: 5px 20px 20px 10px;
 	font-size: 14px;
 	box-shadow: 0px 0px 10px #00393b5f;
 	position: relative;
+
+	@media (max-width: 500px) {
+		min-width: 15%;
+		max-width: 55%;
+	}
 
 	::after {
 		content: "";

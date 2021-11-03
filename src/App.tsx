@@ -10,6 +10,7 @@ import {
 	RichUtils,
 	DraftEditorCommand,
 	convertToRaw,
+	convertFromRaw,
 	RawDraftInlineStyleRange,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
@@ -91,7 +92,7 @@ function App() {
 
 		const raw = convertToRaw(editorState.getCurrentContent());
 		console.log(raw);
-		const styleApplied = raw.blocks.map((block) => {
+		raw.blocks.map((block) => {
 			block.inlineStyleRanges.map((range, index) => {
 				const formatChar = getFormatChar(range);
 				const charsInsertedAtStart = countChars(
@@ -100,7 +101,7 @@ function App() {
 				const charsInsertedAtMiddle = countChars(
 					block.text.substring(
 						range.offset + charsInsertedAtStart,
-						range.offset + charsInsertedAtStart + range.length + 1
+						range.offset + charsInsertedAtStart + range.length
 					)
 				);
 				console.log(`[${index}]`, charsInsertedAtStart, "chars at start");
@@ -126,18 +127,15 @@ function App() {
 							charsInsertedAtMiddle +
 							+range.length
 					);
-				// block.text.substring(range.offset + index);
 				console.log(newBlockText);
 				return (block.text = newBlockText);
 			});
 			return block.text;
 		});
-		//this.substring(0, index) + string + this.substr(index)
-		const whatsappFormatted = styleApplied.reduce(
-			(acc, curr) => acc + curr,
-			""
-		);
-		console.log(whatsappFormatted);
+		const whatsappFormatted = EditorState.createWithContent(convertFromRaw(raw))
+			.getCurrentContent()
+			.getPlainText();
+		console.log(whatsappFormatted, "- whatsapp formatted");
 		setWhatsappFormat(whatsappFormatted);
 	}, [editorState]);
 
