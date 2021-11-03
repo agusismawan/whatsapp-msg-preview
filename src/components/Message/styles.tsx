@@ -2,24 +2,37 @@ import styled from "styled-components";
 
 export const MessageContainer = styled.div`
 	width: 300px;
-	height: 100px;
+	min-height: 50px;
 	background-color: #065051;
 	z-index: 2;
 	border-radius: 8px;
-	color: white;
-	padding: 5px;
+	color: rgb(241 241 242 / 95%);
+	padding: 10px 20px 20px 10px;
 	font-size: 14px;
-	box-shadow: 0px 0px 50px rgb(0, 0, 0);
+	box-shadow: 0px 0px 10px #00393b5f;
 	position: relative;
 
 	::after {
 		content: "";
-		width: 20px;
-		height: 20px;
-		background-color: #065051;
+		width: 0;
+		height: 0;
 		position: absolute;
-		right: -5px;
-		top: 5px;
-		transform: rotate(45deg);
+		right: -10px;
+		top: 0px;
+		border: 20px solid;
+		border-top-right-radius: 3px;
+		border-color: #065051 transparent transparent transparent;
 	}
+`;
+
+export const Hour = styled.span`
+	position: absolute;
+	right: 25px;
+	bottom: 5px;
+	height: 15px;
+	font-size: 11px;
+	line-height: 15px;
+
+	white-space: nowrap;
+	opacity: 0.6;
 `;

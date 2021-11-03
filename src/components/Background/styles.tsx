@@ -11,11 +11,12 @@ export const Container = styled.div`
 	background-color: #090e11;
 	position: relative;
 	background-image: url(${bg});
+	row-gap: 10px;
 `;
 
 export const BgMask = styled.div`
-	opacity: 0.9;
-	background-color: #000;
+	opacity: 0.93;
+	background-color: #090e11;
 	position: absolute;
 	width: 100%;
 	height: 100%;
