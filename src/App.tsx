@@ -146,6 +146,7 @@ function App() {
 					editorState={editorState}
 					onChange={onChange}
 					handleKeyCommand={handleKeyCommand}
+					placeholder={"type here..."}
 				/>
 			</Message>
 			<Controls>
