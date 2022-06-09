@@ -17,7 +17,7 @@ import "draft-js/dist/Draft.css";
 import {
 	BoldButton,
 	ClipboardButton,
-	// CodeButton,
+	CodeButton,
 	Controls,
 	ItalicButton,
 	ShareButton,
@@ -55,14 +55,14 @@ function App() {
 	const onStrikethroughClick = () => {
 		onChange(RichUtils.toggleInlineStyle(editorState, "STRIKETHROUGH"));
 	};
-	// const onCodeClick = () => {
-	// 	onChange(RichUtils.toggleInlineStyle(editorState, "CODE"));
-	// };
+	const onCodeClick = () => {
+		onChange(RichUtils.toggleInlineStyle(editorState, "CODE"));
+	};
 
 	new ClipboardJS("#clipboard");
 
-	type FormatChar = "*" | "_" | "~" /*| "```"*/;
-	type StyleType = "BOLD" | "ITALIC" | "STRIKETHROUGH" /*| "CODE"*/;
+	type FormatChar = "*" | "_" | "~" | "```";
+	type StyleType = "BOLD" | "ITALIC" | "STRIKETHROUGH" | "CODE";
 
 	useEffect(() => {
 		function getFormatChar(range: RawDraftInlineStyleRange): FormatChar {
@@ -73,8 +73,8 @@ function App() {
 					return "_";
 				case "STRIKETHROUGH":
 					return "~";
-				// case "CODE":
-				// 	return "```";
+				case "CODE":
+					return "```";
 			}
 		}
 
@@ -82,7 +82,7 @@ function App() {
 			const textArray = Array.from(text);
 			let count = 0;
 			textArray.map((char) => {
-				if (char === "*" || char === "_" || char === "~" /*|| char === "`"*/) {
+				if (char === "*" || char === "_" || char === "~" || char === "`") {
 					return count++;
 				}
 				return null;
@@ -152,7 +152,7 @@ function App() {
 				<BoldButton onClick={onBoldClick} />
 				<ItalicButton onClick={onItalicClick} />
 				<StrikethroughButton onClick={onStrikethroughClick} />
-				{/* <CodeButton onClick={onCodeClick} /> */}
+				<CodeButton onClick={onCodeClick} />
 				<ClipboardButton
 					data-clipboard-text={whatsappFormat}
 					id={"clipboard"}
